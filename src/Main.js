@@ -21,6 +21,7 @@ import {Link} from 'react-router-dom';
 import UpdateDetails from './UpdateDetails';
 import Appointments from './Appointments';
 import Prescriptions from './Prescription';
+import Person from './Person';
 
 const drawerWidth = 240;
 
@@ -172,7 +173,7 @@ export default function PersistentDrawerLeft() {
         <div className={classes.drawerHeader} 
         />
       
-     <Prescriptions/>
+     <Person/>
             
       </main>
     </div>

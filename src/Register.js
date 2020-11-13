@@ -30,6 +30,9 @@ class Register extends React.Component{
         axios.post('http://localhost:8080/address/create/',this.state)
         axios.post('http://localhost:8080/person/create/',this.state)
         axios.post('http://localhost:8080/contact/create/',this.state)
+        axios.get('http://localhost:8080/person', this.state)
+        axios.get('http://localhost:8080/contact', this.state)
+        axios.get('http://localhost:8080/address', this.state)
          .then(response =>{
              console.log(response)
          }).catch(error=>{
@@ -76,9 +79,8 @@ class Register extends React.Component{
                     </Link>
                     <br></br>    
                     </FormControl> 
-                
-
               </div>  
+              
           
       );
     }	
