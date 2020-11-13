@@ -42,7 +42,7 @@ const tableIcons = {
 };
 
 const api = axios.create({
-  baseURL: `http://localhost:8080`
+  baseURL: "http://localhost:8080"
 })
 
 
@@ -60,7 +60,7 @@ function Prescriptions() {
     const [errorMessages, setErrorMessages] = useState([])
 
     useEffect(() => {
-        axios.get('http://localhost:8080/prescription')
+        api.get("/prescription")
             .then(res => {
                 setData(res.data.data)
             })
