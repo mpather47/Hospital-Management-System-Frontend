@@ -60,7 +60,7 @@ function Prescriptions() {
     const [errorMessages, setErrorMessages] = useState([])
 
     useEffect(() => {
-        api.get('/prescription')
+        axios.get('http://localhost:8080/prescription')
             .then(res => {
                 setData(res.data.data)
             })
