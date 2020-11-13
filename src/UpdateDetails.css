@@ -1,0 +1,12 @@
+input{
+    display: block;
+    align-items: center;
+    margin : 20px;
+    padding-right: 200px;
+    padding-top: 25px;
+}
+
+button{
+    padding: 20px;
+    display: block;
+}
