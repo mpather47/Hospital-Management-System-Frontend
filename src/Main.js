@@ -22,6 +22,9 @@ import UpdateDetails from './UpdateDetails';
 import Appointments from './Appointments';
 import Prescriptions from './Prescription';
 import Person from './Person';
+import History from './PaymentHistory';
+import Register from './Register';
+import { Info } from '@material-ui/icons';
 
 const drawerWidth = 240;
 
@@ -173,7 +176,7 @@ export default function PersistentDrawerLeft() {
         <div className={classes.drawerHeader} 
         />
       
-     <Person/>
+          <Info/>
             
       </main>
     </div>

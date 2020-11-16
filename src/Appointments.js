@@ -42,15 +42,15 @@ const tableIcons = {
 };
 
 const api = axios.create({
-  baseURL: `http://localhost:8080`
+  baseURL: `https://reqres.in/api`
 })
 
 
-function Appointments() {
+function Prescriptions() {
     var columns = [
-        {title: "Appointment ID", field: "appointmentID"},
-        {title: "Patient ID", field: "patientID"},
-        {title: "Booking Date:", field: "bookingDate"}
+        {title: "Appointment ID", field: "first_name"},
+        {title: "Patient ID", field: "last_name"},
+        {title: "Booking Date", field: "email"}
     ]
 
     const [data, setData] = useState([]); //data for table
@@ -60,7 +60,7 @@ function Appointments() {
     const [errorMessages, setErrorMessages] = useState([])
 
     useEffect(() => {
-        api.get('/appointment')
+        api.get("/appointments")
             .then(res => {
                 setData(res.data.data)
             })
@@ -72,18 +72,18 @@ function Appointments() {
     const handleRowUpdate = (newData, oldData, resolve) => {
         //validation
         let errorList = []
-        if(newData.patientID === "") {
-            errorList.push("Please enter a patient ID.")
+        if(newData.last_name === "") {
+            errorList.push("Please enter a Patient ID.")
         }
-        if(newData.bookingDate === "") {
-            errorList.push("Please enter a date.")
+        if(newData.email === "") {
+            errorList.push("Please enter a Booking Date.")
         }
 
         if(errorList.length < 1) {
-            api.patch("/appointment/"+newData.appointmentID, newData)
+            api.patch("/appointments/"+newData.id, newData)
             .then(res => {
                 const dataUpdate = [...data];
-                const index = oldData.tableData.appointmentID;
+                const index = oldData.tableData.id;
                 dataUpdate[index] = newData;
                 setData([...dataUpdate]);
                 resolve()
@@ -105,18 +105,18 @@ function Appointments() {
     const handleRowAdd = (newData, resolve) => {
         //validation
         let errorList = []
-        if(newData.appointmentID === undefined) {
-            errorList.push("Please enter an ID for the appointment")
+        if(newData.first_name === undefined) {
+            errorList.push("Please enter an Appointment ID")
         }
-        if(newData.patientID === undefined) {
-            errorList.push("Please enter a Patient ID for the appointment")
+        if(newData.last_name === undefined) {
+            errorList.push("Please enter a Patient ID")
         }
-        if(newData.bookingDate === undefined) {
-            errorList.push("Please enter a date for the appointment")
+        if(newData.email === undefined) {
+            errorList.push("Please enter a Booking Date")
         }
 
-        if(errorList.lengrth < 1){//this means there is no error
-            api.post("/appointment", newData)
+        if(errorList.length < 1){//this means there is no error
+            api.post("/appointments", newData)
             .then (res => {
                 let dataToAdd = [...data];
                 dataToAdd.push(newData);
@@ -138,10 +138,10 @@ function Appointments() {
     }
 
     const handleRowDelete = (oldData, resolve) => {
-        api.delete("/appointment/"+oldData.appointmentID)
+        api.delete("/appointments/"+oldData.id)
             .then(res => {
                 const dataDelete = [...data];
-                const index = oldData.tableData.appointmentID;
+                const index = oldData.tableData.id;
                 dataDelete.splice(index, 1);
                 setData([...dataDelete]);
                 resolve()
@@ -149,7 +149,7 @@ function Appointments() {
     }
 
     return (
-        <div className="Appointment">
+        <div className="Prescription">
             <Grid container spacing={1}>
                 <Grid item xs={3}></Grid>
                 <Grid item xs={6}>
@@ -189,4 +189,4 @@ function Appointments() {
     )
 }
 
-export default Appointments
+export default Prescriptions

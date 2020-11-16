@@ -42,15 +42,15 @@ const tableIcons = {
 };
 
 const api = axios.create({
-  baseURL: "http://localhost:8080"
+  baseURL: `https://reqres.in/api`
 })
 
 
 function Prescriptions() {
     var columns = [
-        {title: "Prescription ID", field: "prescription_id"},
-        {title: "Medication ID", field: "medication_id"},
-        {title: "Visit ID:", field: "visit_id"}
+        {title: "Prescription ID", field: "first_name"},
+        {title: "Medication ID", field: "last_name"},
+        {title: "Visit ID:", field: "email"}
     ]
 
     const [data, setData] = useState([]); //data for table
@@ -60,7 +60,7 @@ function Prescriptions() {
     const [errorMessages, setErrorMessages] = useState([])
 
     useEffect(() => {
-        api.get("/prescription")
+        api.get("/prescriptions")
             .then(res => {
                 setData(res.data.data)
             })
@@ -72,18 +72,18 @@ function Prescriptions() {
     const handleRowUpdate = (newData, oldData, resolve) => {
         //validation
         let errorList = []
-        if(newData.medication_id === "") {
+        if(newData.last_name === "") {
             errorList.push("Please enter a medication ID.")
         }
-        if(newData.visit_id === "") {
+        if(newData.email === "") {
             errorList.push("Please enter a visitation id.")
         }
 
         if(errorList.length < 1) {
-            api.patch("/prescription/"+newData.prescription_id, newData)
+            api.patch("/prescriptions/"+newData.id, newData)
             .then(res => {
                 const dataUpdate = [...data];
-                const index = oldData.tableData.prescription_id;
+                const index = oldData.tableData.id;
                 dataUpdate[index] = newData;
                 setData([...dataUpdate]);
                 resolve()
@@ -105,18 +105,18 @@ function Prescriptions() {
     const handleRowAdd = (newData, resolve) => {
         //validation
         let errorList = []
-        if(newData.prescription_id === undefined) {
+        if(newData.first_name === undefined) {
             errorList.push("Please enter an ID for the prescription")
         }
-        if(newData.medication_id === undefined) {
+        if(newData.last_name === undefined) {
             errorList.push("Please enter a medication ID")
         }
-        if(newData.visit_id === undefined) {
+        if(newData.email === undefined) {
             errorList.push("Please enter a visitation ID")
         }
 
-        if(errorList.lengrth < 1){//this means there is no error
-            api.post("/prescription", newData)
+        if(errorList.length < 1){//this means there is no error
+            api.post("/prescriptions", newData)
             .then (res => {
                 let dataToAdd = [...data];
                 dataToAdd.push(newData);
@@ -138,10 +138,10 @@ function Prescriptions() {
     }
 
     const handleRowDelete = (oldData, resolve) => {
-        api.delete("/prescription/"+oldData.prescription_id)
+        api.delete("/prescriptions/"+oldData.id)
             .then(res => {
                 const dataDelete = [...data];
-                const index = oldData.tableData.prescription_id;
+                const index = oldData.tableData.id;
                 dataDelete.splice(index, 1);
                 setData([...dataDelete]);
                 resolve()

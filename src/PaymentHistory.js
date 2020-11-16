@@ -42,15 +42,15 @@ const tableIcons = {
 };
 
 const api = axios.create({
-  baseURL: "http://localhost:8080"
+  baseURL: `https://reqres.in/api`
 })
 
 
-function Person() {
+function History() {
     var columns = [
-        {title: "Person ID", field: "person_id"},
-        {title: "Date of Birth", field: "date_of_birth"},
-        {title: "Name", field: "name"}
+        {title: "Invoice Number", field: "first_name"},
+        {title: "Invoice Date", field: "last_name"},
+        {title: "Description:", field: "email"}
     ]
 
     const [data, setData] = useState([]); //data for table
@@ -60,7 +60,7 @@ function Person() {
     const [errorMessages, setErrorMessages] = useState([])
 
     useEffect(() => {
-        fetch("http://localhost:8080/person")
+        api.get("/history")
             .then(res => {
                 setData(res.data.data)
             })
@@ -72,18 +72,18 @@ function Person() {
     const handleRowUpdate = (newData, oldData, resolve) => {
         //validation
         let errorList = []
-        if(newData.date_of_birth === "") {
-            errorList.push("Please enter a date of birth.")
+        if(newData.last_name === "") {
+            errorList.push("Please enter a invoice date.")
         }
-        if(newData.name === "") {
-            errorList.push("Please enter a name.")
+        if(newData.email === "") {
+            errorList.push("Please enter a description.")
         }
 
         if(errorList.length < 1) {
-            api.patch("/person/"+newData.person_id, newData)
+            api.patch("/history/"+newData.id, newData)
             .then(res => {
                 const dataUpdate = [...data];
-                const index = oldData.tableData.person_id;
+                const index = oldData.tableData.id;
                 dataUpdate[index] = newData;
                 setData([...dataUpdate]);
                 resolve()
@@ -105,18 +105,18 @@ function Person() {
     const handleRowAdd = (newData, resolve) => {
         //validation
         let errorList = []
-        if(newData.person_id === undefined) {
-            errorList.push("Please enter an ID for the person")
+        if(newData.first_name === undefined) {
+            errorList.push("Please enter an invoice number")
         }
-        if(newData.date_of_birth === undefined) {
-            errorList.push("Please enter a date of birth")
+        if(newData.last_name === undefined) {
+            errorList.push("Please enter a invoice date")
         }
-        if(newData.name === undefined) {
-            errorList.push("Please enter a name")
+        if(newData.email === undefined) {
+            errorList.push("Please enter a description")
         }
 
         if(errorList.length < 1){//this means there is no error
-            api.post("/person", newData)
+            api.post("/history", newData)
             .then (res => {
                 let dataToAdd = [...data];
                 dataToAdd.push(newData);
@@ -138,10 +138,10 @@ function Person() {
     }
 
     const handleRowDelete = (oldData, resolve) => {
-        api.delete("/person/"+oldData.person_id)
+        api.delete("/history/"+oldData.id)
             .then(res => {
                 const dataDelete = [...data];
-                const index = oldData.tableData.person_id;
+                const index = oldData.tableData.id;
                 dataDelete.splice(index, 1);
                 setData([...dataDelete]);
                 resolve()
@@ -149,7 +149,7 @@ function Person() {
     }
 
     return (
-        <div className="Person">
+        <div className="History">
             <Grid container spacing={1}>
                 <Grid item xs={3}></Grid>
                 <Grid item xs={6}>
@@ -163,7 +163,7 @@ function Person() {
                         }
                     </div>
                     <MaterialTable 
-                        title="People"
+                        title="Payment History"
                         columns={columns}
                         data={data}
                         icons={tableIcons}
@@ -189,4 +189,4 @@ function Person() {
     )
 }
 
-export default Person
+export default History
