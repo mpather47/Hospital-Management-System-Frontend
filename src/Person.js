@@ -20,6 +20,7 @@ import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
 import axios from 'axios'
 import Alert from '@material-ui/lab/Alert';
+import { SentimentSatisfied } from '@material-ui/icons';
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -42,15 +43,17 @@ const tableIcons = {
 };
 
 const api = axios.create({
-  baseURL: "http://localhost:8080"
+  baseURL: "http://localhost:8080/person"
 })
 
 
 function Person() {
+
     var columns = [
-        {title: "Person ID", field: "person_id"},
-        {title: "Date of Birth", field: "date_of_birth"},
-        {title: "Name", field: "name"}
+        {title: "Person ID", field: "personId", hidden: true},
+        {title: "Name", field: "name"},
+        {title: "Date of Birth", field: "dateOfBirth"}
+        
     ]
 
     const [data, setData] = useState([]); //data for table
@@ -60,9 +63,9 @@ function Person() {
     const [errorMessages, setErrorMessages] = useState([])
 
     useEffect(() => {
-        fetch("http://localhost:8080/person")
+        api.get("/all")
             .then(res => {
-                setData(res.data.data)
+                setData(res.data)
             })
             .catch(error=>{
                 console.log("Error")
@@ -72,18 +75,19 @@ function Person() {
     const handleRowUpdate = (newData, oldData, resolve) => {
         //validation
         let errorList = []
-        if(newData.date_of_birth === "") {
-            errorList.push("Please enter a date of birth.")
-        }
         if(newData.name === "") {
             errorList.push("Please enter a name.")
         }
+        if(newData.dateOfBirth === "") {
+            errorList.push("Please enter a date of birth.")
+        }
+        
 
         if(errorList.length < 1) {
-            api.patch("/person/"+newData.person_id, newData)
+            api.post("/update", newData)
             .then(res => {
                 const dataUpdate = [...data];
-                const index = oldData.tableData.person_id;
+                const index = oldData.tableData.personId;
                 dataUpdate[index] = newData;
                 setData([...dataUpdate]);
                 resolve()
@@ -105,18 +109,16 @@ function Person() {
     const handleRowAdd = (newData, resolve) => {
         //validation
         let errorList = []
-        if(newData.person_id === undefined) {
-            errorList.push("Please enter an ID for the person")
-        }
-        if(newData.date_of_birth === undefined) {
-            errorList.push("Please enter a date of birth")
-        }
         if(newData.name === undefined) {
             errorList.push("Please enter a name")
         }
+        if(newData.dateOfBirth === undefined) {
+            errorList.push("Please enter a date of birth")
+        }
+
 
         if(errorList.length < 1){//this means there is no error
-            api.post("/person", newData)
+            api.post("/create", newData)
             .then (res => {
                 let dataToAdd = [...data];
                 dataToAdd.push(newData);
@@ -124,6 +126,8 @@ function Person() {
                 resolve()
                 setErrorMessages([])
                 setIserror(false)
+
+
             })
             .catch(error => {
                 setErrorMessages(["Cannot add data. Server error!"])
@@ -135,13 +139,14 @@ function Person() {
             setIserror(true)
             resolve()
         } 
+        
     }
 
     const handleRowDelete = (oldData, resolve) => {
-        api.delete("/person/"+oldData.person_id)
+        api.delete("/delete/"+oldData.personId)
             .then(res => {
                 const dataDelete = [...data];
-                const index = oldData.tableData.person_id;
+                const index = oldData.tableData.personId;
                 dataDelete.splice(index, 1);
                 setData([...dataDelete]);
                 resolve()

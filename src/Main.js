@@ -176,7 +176,7 @@ export default function PersistentDrawerLeft() {
         <div className={classes.drawerHeader} 
         />
       
-          <Info/>
+        <Person/>
             
       </main>
     </div>
