@@ -21,6 +21,7 @@ import ViewColumn from '@material-ui/icons/ViewColumn';
 import axios from 'axios'
 import Alert from '@material-ui/lab/Alert';
 
+
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
   Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
@@ -42,15 +43,17 @@ const tableIcons = {
 };
 
 const api = axios.create({
-  baseURL: `https://reqres.in/api`
+  baseURL: "http://localhost:8080/invoice"
 })
 
 
-function History() {
+export function PaymentHistory() {
+
     var columns = [
-        {title: "Invoice Number", field: "first_name"},
-        {title: "Invoice Date", field: "last_name"},
-        {title: "Description:", field: "email"}
+        {title: "Invoice ID", field: "invoiceNum", hidden: true},
+        {title: "Invoice Date", field: "invoiceDate"},
+        {title: "Description", field: "description"}
+        
     ]
 
     const [data, setData] = useState([]); //data for table
@@ -60,9 +63,9 @@ function History() {
     const [errorMessages, setErrorMessages] = useState([])
 
     useEffect(() => {
-        api.get("/history")
+        api.get("/all")
             .then(res => {
-                setData(res.data.data)
+                setData(res.data)
             })
             .catch(error=>{
                 console.log("Error")
@@ -72,23 +75,31 @@ function History() {
     const handleRowUpdate = (newData, oldData, resolve) => {
         //validation
         let errorList = []
-        if(newData.last_name === "") {
-            errorList.push("Please enter a invoice date.")
+        if(newData.invoiceDate === "") {
+            errorList.push("Please enter an invoice date.")
         }
-        if(newData.email === "") {
+        if(newData.description === "") {
             errorList.push("Please enter a description.")
         }
+        
 
         if(errorList.length < 1) {
-            api.patch("/history/"+newData.id, newData)
+            api.post("/update", newData)
             .then(res => {
                 const dataUpdate = [...data];
-                const index = oldData.tableData.id;
+                const index = oldData.tableData.invoiceNum;
                 dataUpdate[index] = newData;
                 setData([...dataUpdate]);
                 resolve()
                 setIserror(false)
                 setErrorMessages([])
+                api.get("/all")
+                    .then(res => {
+                    setData(res.data)
+                 })
+                .catch(error=>{
+                    console.log("Error")
+                 })
             })
             .catch(error => {
                 setErrorMessages(["Update failed! Server error"])
@@ -105,18 +116,16 @@ function History() {
     const handleRowAdd = (newData, resolve) => {
         //validation
         let errorList = []
-        if(newData.first_name === undefined) {
-            errorList.push("Please enter an invoice number")
+        if(newData.invoiceDate === undefined) {
+            errorList.push("Please enter an invoice date.")
         }
-        if(newData.last_name === undefined) {
-            errorList.push("Please enter a invoice date")
-        }
-        if(newData.email === undefined) {
-            errorList.push("Please enter a description")
+        if(newData.description === undefined) {
+            errorList.push("Please enter a description.")
         }
 
+
         if(errorList.length < 1){//this means there is no error
-            api.post("/history", newData)
+            api.post("/create", newData)
             .then (res => {
                 let dataToAdd = [...data];
                 dataToAdd.push(newData);
@@ -124,6 +133,14 @@ function History() {
                 resolve()
                 setErrorMessages([])
                 setIserror(false)
+                api.get("/all")
+                    .then(res => {
+                    setData(res.data)
+                })
+                .catch(error=>{
+                    console.log("Error")
+                })
+
             })
             .catch(error => {
                 setErrorMessages(["Cannot add data. Server error!"])
@@ -135,21 +152,30 @@ function History() {
             setIserror(true)
             resolve()
         } 
+        
     }
 
     const handleRowDelete = (oldData, resolve) => {
-        api.delete("/history/"+oldData.id)
+        api.delete("/delete/"+oldData.invoiceNum)
             .then(res => {
                 const dataDelete = [...data];
-                const index = oldData.tableData.id;
+                const index = oldData.tableData.invoiceNum;
                 dataDelete.splice(index, 1);
+                console.log(dataDelete)
                 setData([...dataDelete]);
                 resolve()
+                api.get("/all")
+                    .then(res => {
+                    setData(res.data)
+                })
+                .catch(error=>{
+                    console.log("Error")
+                 })
             })
     }
 
     return (
-        <div className="History">
+        <div className="Payment History">
             <Grid container spacing={1}>
                 <Grid item xs={3}></Grid>
                 <Grid item xs={6}>
@@ -189,4 +215,4 @@ function History() {
     )
 }
 
-export default History
+export default PaymentHistory

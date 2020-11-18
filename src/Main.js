@@ -22,7 +22,7 @@ import UpdateDetails from './UpdateDetails';
 import Appointments from './Appointments';
 import Prescriptions, { Prescription } from './Prescription';
 import Person from './Person';
-import History from './PaymentHistory';
+import History, { PaymentHistory } from './PaymentHistory';
 import Register from './Register';
 import { Info } from '@material-ui/icons';
 
@@ -176,7 +176,7 @@ export default function PersistentDrawerLeft() {
         <div className={classes.drawerHeader} 
         />
       
-        <Prescription/>
+        <PaymentHistory/>
             
       </main>
     </div>
