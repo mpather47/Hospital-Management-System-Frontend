@@ -20,7 +20,7 @@ import MailIcon from '@material-ui/icons/Mail';
 import {Link} from 'react-router-dom';
 import UpdateDetails from './UpdateDetails';
 import Appointments from './Appointments';
-import Prescriptions from './Prescription';
+import Prescriptions, { Prescription } from './Prescription';
 import Person from './Person';
 import History from './PaymentHistory';
 import Register from './Register';
@@ -176,7 +176,7 @@ export default function PersistentDrawerLeft() {
         <div className={classes.drawerHeader} 
         />
       
-        <Person/>
+        <Prescription/>
             
       </main>
     </div>

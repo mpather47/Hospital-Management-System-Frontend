@@ -20,7 +20,7 @@ import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
 import axios from 'axios'
 import Alert from '@material-ui/lab/Alert';
-import { SentimentSatisfied } from '@material-ui/icons';
+
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -47,7 +47,7 @@ const api = axios.create({
 })
 
 
-function Person() {
+export function Person() {
 
     var columns = [
         {title: "Person ID", field: "personId", hidden: true},
@@ -93,6 +93,13 @@ function Person() {
                 resolve()
                 setIserror(false)
                 setErrorMessages([])
+                api.get("/all")
+                    .then(res => {
+                    setData(res.data)
+                 })
+                .catch(error=>{
+                    console.log("Error")
+                 })
             })
             .catch(error => {
                 setErrorMessages(["Update failed! Server error"])
@@ -126,7 +133,13 @@ function Person() {
                 resolve()
                 setErrorMessages([])
                 setIserror(false)
-
+                api.get("/all")
+                    .then(res => {
+                    setData(res.data)
+                })
+                .catch(error=>{
+                    console.log("Error")
+                })
 
             })
             .catch(error => {
@@ -148,8 +161,16 @@ function Person() {
                 const dataDelete = [...data];
                 const index = oldData.tableData.personId;
                 dataDelete.splice(index, 1);
+                console.log(dataDelete)
                 setData([...dataDelete]);
                 resolve()
+                api.get("/all")
+                    .then(res => {
+                    setData(res.data)
+                })
+                .catch(error=>{
+                    console.log("Error")
+                 })
             })
     }
 

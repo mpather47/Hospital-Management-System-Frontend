@@ -21,6 +21,7 @@ import ViewColumn from '@material-ui/icons/ViewColumn';
 import axios from 'axios'
 import Alert from '@material-ui/lab/Alert';
 
+
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
   Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
@@ -42,15 +43,17 @@ const tableIcons = {
 };
 
 const api = axios.create({
-  baseURL: `https://reqres.in/api`
+  baseURL: "http://localhost:8080/prescription"
 })
 
 
-function Prescriptions() {
+export function Prescription() {
+
     var columns = [
-        {title: "Prescription ID", field: "first_name"},
-        {title: "Medication ID", field: "last_name"},
-        {title: "Visit ID:", field: "email"}
+        {title: "Prescription ID", field: "prescriptionId", hidden: true},
+        {title: "Medication ID", field: "medicationId"},
+        {title: "Visit ID", field: "visitId"}
+        
     ]
 
     const [data, setData] = useState([]); //data for table
@@ -60,9 +63,9 @@ function Prescriptions() {
     const [errorMessages, setErrorMessages] = useState([])
 
     useEffect(() => {
-        api.get("/prescriptions")
+        api.get("/all")
             .then(res => {
-                setData(res.data.data)
+                setData(res.data)
             })
             .catch(error=>{
                 console.log("Error")
@@ -72,23 +75,31 @@ function Prescriptions() {
     const handleRowUpdate = (newData, oldData, resolve) => {
         //validation
         let errorList = []
-        if(newData.last_name === "") {
+        if(newData.medicationId === "") {
             errorList.push("Please enter a medication ID.")
         }
-        if(newData.email === "") {
-            errorList.push("Please enter a visitation id.")
+        if(newData.visitId === "") {
+            errorList.push("Please enter a visit ID.")
         }
+        
 
         if(errorList.length < 1) {
-            api.patch("/prescriptions/"+newData.id, newData)
+            api.post("/update", newData)
             .then(res => {
                 const dataUpdate = [...data];
-                const index = oldData.tableData.id;
+                const index = oldData.tableData.prescriptionId;
                 dataUpdate[index] = newData;
                 setData([...dataUpdate]);
                 resolve()
                 setIserror(false)
                 setErrorMessages([])
+                api.get("/all")
+                    .then(res => {
+                    setData(res.data)
+                 })
+                .catch(error=>{
+                    console.log("Error")
+                 })
             })
             .catch(error => {
                 setErrorMessages(["Update failed! Server error"])
@@ -105,18 +116,16 @@ function Prescriptions() {
     const handleRowAdd = (newData, resolve) => {
         //validation
         let errorList = []
-        if(newData.first_name === undefined) {
-            errorList.push("Please enter an ID for the prescription")
+        if(newData.medicationId === undefined) {
+            errorList.push("Please enter a medication ID.")
         }
-        if(newData.last_name === undefined) {
-            errorList.push("Please enter a medication ID")
-        }
-        if(newData.email === undefined) {
-            errorList.push("Please enter a visitation ID")
+        if(newData.visitId === undefined) {
+            errorList.push("Please enter a visit ID.")
         }
 
+
         if(errorList.length < 1){//this means there is no error
-            api.post("/prescriptions", newData)
+            api.post("/create", newData)
             .then (res => {
                 let dataToAdd = [...data];
                 dataToAdd.push(newData);
@@ -124,6 +133,14 @@ function Prescriptions() {
                 resolve()
                 setErrorMessages([])
                 setIserror(false)
+                api.get("/all")
+                    .then(res => {
+                    setData(res.data)
+                })
+                .catch(error=>{
+                    console.log("Error")
+                })
+
             })
             .catch(error => {
                 setErrorMessages(["Cannot add data. Server error!"])
@@ -135,16 +152,25 @@ function Prescriptions() {
             setIserror(true)
             resolve()
         } 
+        
     }
 
     const handleRowDelete = (oldData, resolve) => {
-        api.delete("/prescriptions/"+oldData.id)
+        api.delete("/delete/"+oldData.prescriptionId)
             .then(res => {
                 const dataDelete = [...data];
-                const index = oldData.tableData.id;
+                const index = oldData.tableData.prescriptionId;
                 dataDelete.splice(index, 1);
+                console.log(dataDelete)
                 setData([...dataDelete]);
                 resolve()
+                api.get("/all")
+                    .then(res => {
+                    setData(res.data)
+                })
+                .catch(error=>{
+                    console.log("Error")
+                 })
             })
     }
 
@@ -189,4 +215,4 @@ function Prescriptions() {
     )
 }
 
-export default Prescriptions
+export default Prescription
