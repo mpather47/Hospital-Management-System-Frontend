@@ -19,15 +19,6 @@ import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
 import {Link} from 'react-router-dom';
 import UpdateDetails from './UpdateDetails';
-import Appointments, { Appointment } from './Appointments';
-import Prescriptions, { Prescription } from './Prescription';
-import Person from './Person';
-import History, { PaymentHistory } from './PaymentHistory';
-import Register from './Register';
-import { Info } from '@material-ui/icons';
-import AppointmentUser from './AppointmentsUser';
-import PrescriptionUser from './PrescriptionUser';
-import PaymentHistoryUser from './PaymentHistoryUser';
 
 const drawerWidth = 240;
 
@@ -179,7 +170,7 @@ export default function PersistentDrawerLeft() {
         <div className={classes.drawerHeader} 
         />
       
-        <PaymentHistoryUser/>
+     <UpdateDetails/>
             
       </main>
     </div>
