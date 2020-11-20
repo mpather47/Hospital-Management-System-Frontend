@@ -51,7 +51,7 @@ export function PaymentHistory() {
 
     var columns = [
         {title: "Invoice ID", field: "invoiceNum", hidden: true},
-        {title: "Invoice Date", field: "invoiceDate"},
+        {title: "Invoice Date", field: "invoiceDate", type: 'date'},
         {title: "Description", field: "description"}
         
     ]
