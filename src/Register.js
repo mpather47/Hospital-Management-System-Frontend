@@ -24,11 +24,13 @@ class Register extends React.Component{
             this.setState({[e.target.name]:e.target.value})
         }
 
+        
+
     onSubmitHandler = (e)=>{
         e.preventDefault();
         console.log(this.state);
-        axios.post('http://localhost:8080/address/create/',this.state)
-        axios.post('http://localhost:8080/person/create/',this.state)
+         axios.post('http://localhost:8080/address/create/', this.state)
+         axios.post('http://localhost:8080/person/create/',this.state)
         axios.post('http://localhost:8080/contact/create/',this.state)
          .then(response =>{
              console.log(response)
@@ -36,6 +38,8 @@ class Register extends React.Component{
             console.log(error)
 
          })
+
+         
 
     }
     render() {
