@@ -29,6 +29,7 @@ class Register extends React.Component{
     onSubmitHandler = (e)=>{
         e.preventDefault();
         console.log(this.state);
+<<<<<<< HEAD
          axios.post('http://localhost:8080/address/create/', this.state)
          axios.post('http://localhost:8080/person/create/',this.state)
         axios.post('http://localhost:8080/contact/create/',this.state)
@@ -38,6 +39,18 @@ class Register extends React.Component{
             console.log(error)
 
          })
+=======
+        //axios.post('http://localhost:8080/address/create/',this.state)
+        //axios.post('http://localhost:8080/person/create/',this.state)
+        //axios.post('http://localhost:8080/contact/create/',this.state)
+        //axios.get("http://localhost:8080/person/read/164909fe-0a81-490b-901a-d22b48abb780")
+        axios.get("http://localhost:8080/person/all/")
+            .then(function (response) {
+            console.log(response);
+             })
+        
+        
+>>>>>>> d2309317cec9b12965e83e34591499d1cd46e350
 
          
 
@@ -80,9 +93,8 @@ class Register extends React.Component{
                     </Link>
                     <br></br>    
                     </FormControl> 
-                
-
               </div>  
+              
           
       );
     }	

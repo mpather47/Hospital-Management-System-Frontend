@@ -20,9 +20,21 @@ import MailIcon from '@material-ui/icons/Mail';
 import { Link } from 'react-router-dom';
 import Home from './Home';
 import UpdateDetails from './UpdateDetails';
+
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Register from './Register';
 import { render } from 'react-dom';
+
+import Appointments, { Appointment } from './Appointments';
+import Prescriptions, { Prescription } from './Prescription';
+import Person from './Person';
+import History, { PaymentHistory } from './PaymentHistory';
+import Register from './Register';
+import { Info } from '@material-ui/icons';
+import AppointmentUser from './AppointmentsUser';
+import PrescriptionUser from './PrescriptionUser';
+import PaymentHistoryUser from './PaymentHistoryUser';
+
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
@@ -194,7 +206,12 @@ export default function PersistentDrawerLeft() {
       >
         <div className={classes.drawerHeader}
         />
+
         {button}
+      
+        <PaymentHistoryUser/>
+            
+
       </main>
     </div>
   );
