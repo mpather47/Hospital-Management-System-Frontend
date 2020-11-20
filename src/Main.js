@@ -25,6 +25,9 @@ import Person from './Person';
 import History, { PaymentHistory } from './PaymentHistory';
 import Register from './Register';
 import { Info } from '@material-ui/icons';
+import AppointmentUser from './AppointmentsUser';
+import PrescriptionUser from './PrescriptionUser';
+import PaymentHistoryUser from './PaymentHistoryUser';
 
 const drawerWidth = 240;
 
@@ -176,7 +179,7 @@ export default function PersistentDrawerLeft() {
         <div className={classes.drawerHeader} 
         />
       
-        <Appointment/>
+        <PaymentHistoryUser/>
             
       </main>
     </div>
