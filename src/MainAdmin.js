@@ -25,10 +25,9 @@ import Prescription from './Prescription';
 import Appointments from './Appointments';
 import PaymentHistory from './PaymentHistory';
 import AppointmentsUser from './AppointmentsUser';
-import PaymentHistoryUser from './PaymentHistoryUser';
+import Employee from './Employee';
 import PresriptionsUser, { PrescriptionUser } from './PrescriptionUser'; 
-
-
+import Person from './Person';
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -114,21 +113,17 @@ export default function PersistentDrawerLeft() {
   }
 
 
-
-
-
-
   let screen;
   if (update === 1) {
-    screen = <Home />;
-  } else if(update === 2){
-    screen = <UpdateDetails />;
-  }else if(update === 3){
-    screen = <AppointmentsUser/>;
+    screen = <Person />;
+  }else if(update === 2){
+    screen = <Employee/>;
+  } else if(update === 3){
+    screen = <Appointments/>;
   }else if(update === 4){
-    screen = <PrescriptionUser/>;
+    screen = <Prescription/>;
   }else if(update === 5){
-    screen = <PaymentHistoryUser/>;
+    screen = <PaymentHistory/>;
   }
 
   return (
@@ -171,7 +166,7 @@ export default function PersistentDrawerLeft() {
         </div>
         <Divider />
         <List>
-          {['Home', 'Update Information', 'Appointments', 'Presriptions', 'Payment History'].map((text, index) => (
+          {['Patient', 'Employees', 'Appointments', 'Presriptions', 'Payment History'].map((text, index) => (
             <ListItem button key={text}>
               <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
               <Link style={navStyle} onClick={handleUpdate}  >

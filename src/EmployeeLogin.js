@@ -33,12 +33,8 @@ class Login extends React.Component{
                 </FormControl>
                 <br></br>
                 <FormControl>
-                <Link to="/Home">
+                <Link to="/AdminHome">
                     <Button  color="primary"variant="contained" onSubmit >Login</Button>
-                    </Link>
-                    <br></br>
-                    <Link to="/Register">
-                    <Button color="primary" variant="contained" onSubmit >Register</Button>
                     </Link>
                     <br></br>
                     <Link to="/Starter">

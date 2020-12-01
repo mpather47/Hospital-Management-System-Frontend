@@ -14,10 +14,10 @@ class UpdateDetails extends React.Component {
       address: [],
       contact: [],
       gender: [],
-      personId: '00cb234b-bd0a-4ac3-9401-1905b267dc87',
-      contactId: '23ced493-a5f8-489d-b907-7066687753ec',
+      personId: '7b8712e3-b7fd-4a3c-ad42-6cb1040edec9',
+      contactId: 'bf0bdded-d5e3-49e6-86cc-7b06cd86e539',
       genderId: '1',
-      addressId: 'a13c05ee-b595-403b-8198-2d854fbce8cd',
+      addressId: 'a20d6953-2fb2-42ca-98e7-2647176cf461',
       name: '',
       dateOfBirth: '',
       genderType: '',
@@ -36,7 +36,7 @@ class UpdateDetails extends React.Component {
 
 
   componentDidMount() {
-    axios.get('http://localhost:8080/person/read/00cb234b-bd0a-4ac3-9401-1905b267dc87')
+    axios.get('http://localhost:8080/person/read/7b8712e3-b7fd-4a3c-ad42-6cb1040edec9')
       .then(res => {
         console.log(res)
         this.setState({ person: res.data })
@@ -46,20 +46,20 @@ class UpdateDetails extends React.Component {
 
 
 
-    axios.get('http://localhost:8080/address/read/a13c05ee-b595-403b-8198-2d854fbce8cd')
+    axios.get('http://localhost:8080/address/read/a20d6953-2fb2-42ca-98e7-2647176cf461')
       .then(res => {
         console.log(res)
         this.setState({ address: res.data })
 
       })
 
-    axios.get('http://localhost:8080/contact/read/23ced493-a5f8-489d-b907-7066687753ec')
+    axios.get('http://localhost:8080/contact/read/bf0bdded-d5e3-49e6-86cc-7b06cd86e539')
       .then(res => {
         console.log(res)
         this.setState({ contact: res.data })
 
       })
-    axios.get('http://localhost:8080/gender/read/1')
+    axios.get('http://localhost:8080/gender/read/1')    
       .then(res => {
         console.log(res)
         this.setState({ gender: res.data })
@@ -93,6 +93,7 @@ class UpdateDetails extends React.Component {
       <div className="container">
 
         <FormControl style={{ margin: 50 }} onSubmit={this.onSubmitHandler}>
+          <h1>Update Information</h1>
           <Input type="text" style={{ width: 500 }} name="name" placeholder={person.name} value={name} className="form-control" onChange={this.handleChange} />
 
           <br></br>

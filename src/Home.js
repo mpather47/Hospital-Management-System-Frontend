@@ -26,7 +26,7 @@ class Home extends React.Component {
         address: [],
         contact: [],
         gender: [],
-        personId: '00cb234b-bd0a-4ac3-9401-1905b267dc87',
+        personId: '7b8712e3-b7fd-4a3c-ad42-6cb1040edec9',
         name: '',
         dateOfBirth: '',
         genderType: '',
@@ -44,7 +44,7 @@ class Home extends React.Component {
     }
 
     componentDidMount() {
-        axios.get('http://localhost:8080/person/read/00cb234b-bd0a-4ac3-9401-1905b267dc87')
+        axios.get('http://localhost:8080/person/read/7b8712e3-b7fd-4a3c-ad42-6cb1040edec9')
             .then(res => {
                 console.log(res)
                 this.setState({ person: res.data })
@@ -54,14 +54,14 @@ class Home extends React.Component {
 
 
 
-        axios.get('http://localhost:8080/address/read/a13c05ee-b595-403b-8198-2d854fbce8cd')
+        axios.get('http://localhost:8080/address/read/a20d6953-2fb2-42ca-98e7-2647176cf461')
             .then(res => {
                 console.log(res)
                 this.setState({ address: res.data })
 
             })
 
-        axios.get('http://localhost:8080/contact/read/23ced493-a5f8-489d-b907-7066687753ec')
+        axios.get('http://localhost:8080/contact/read/bf0bdded-d5e3-49e6-86cc-7b06cd86e539')
             .then(res => {
                 console.log(res)
                 this.setState({ contact: res.data })
